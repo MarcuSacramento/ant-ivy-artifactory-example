@@ -1,0 +1,43 @@
+<ivy-module version="2.0">
+	<info organisation="br.gov.mj" module="eCertidao" revision="${build.version}" status="${artifactory.publish.status}"/>
+
+	<!-- Classpath management-->
+	<configurations>
+        <conf name="compile" description="Dependências compiladas com o Projeto"/>
+        <conf name="runtime" description="Dependências em tempo de execução" extends="compile"/>
+        <conf name="test" description="Dependências para teste" extends="runtime"/>
+        <conf name="provided" description="Dependências para compilar mas serão providas pelo Container Web"/>
+    </configurations>
+    <publications>
+		<artifact name="${projectName}" type="war" ext="war"/>
+	</publications>
+	<dependencies>
+		<!-- Dependências originais do projeto -->
+		<dependency org="commons-beanutils" name="commons-beanutils" rev="1.6.1" conf="compile->default"/>
+		<dependency org="commons-beanutils" name="commons-beanutils" rev="1.7.0" conf="compile->default"/>
+		<dependency org="commons-chain" name="commons-chain" rev="1.1" conf="compile->default"/>
+		<dependency org="commons-collections" name="commons-collections" rev="3.1" conf="compile->default"/>
+		<dependency org="commons-digester" name="commons-digester" rev="1.8" conf="compile->default"/>
+		<dependency org="commons-lang" name="commons-lang" rev="2.3" conf="compile->default"/>
+		<dependency org="commons-validator" name="commons-validator" rev="1.3.1" conf="compile->default"/>
+		<dependency org="displaytag" name="displaytag" rev="1.1.1" conf="compile->default"/>
+		<dependency org="displaytag" name="displaytag-export-poi" rev="1.1.1" conf="compile->default"/>
+		<dependency org="jasperreports" name="jasperreports" rev="1.1.0" conf="compile->default"/>
+		<dependency org="org.apache.struts" name="struts-core" rev="1.3.8" conf="compile->default"/>
+		<dependency org="org.apache.struts" name="struts-el" rev="1.3.8" conf="compile->default"/>
+		<dependency org="org.apache.struts" name="struts-taglib" rev="1.3.8" conf="compile->default"/>
+		<dependency org="org.apache.struts" name="struts-tiles" rev="1.3.8" conf="compile->default"/>
+
+		<!-- Dependências adicionais -->
+		<dependency org="com.octo.captcha" name="jcaptcha" rev="1.0" conf="provided->default"/>
+		
+		<!-- Dependências de bibliotecas do MJ -->
+		<dependency org="br.gov.mj" name="MJComumWeb" rev="1.0.0" conf="compile->default"/>
+		<dependency org="br.gov.mj" name="MJStruts" rev="1.0.0" conf="compile->default"/>
+		<!-- Dependências adicionais de bibliotecas do MJ -->
+		<dependency org="br.gov.mj" name="MJ_Corporativo" rev="1.0.0" conf="provided->default"/>
+		<dependency org="br.gov.mj" name="MJDnn" rev="1.4.2" conf="provided->default"/>
+		<dependency org="br.gov.mj" name="MJDnnCliente" rev="1.4.2" conf="provided->default"/>
+		<dependency org="br.gov.mj" name="MJCoreJSF" rev="1.0.0" conf="provided->default"/>
+	</dependencies>
+</ivy-module>

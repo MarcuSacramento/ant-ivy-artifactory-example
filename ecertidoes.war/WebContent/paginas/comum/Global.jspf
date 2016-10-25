@@ -1,0 +1,8 @@
+<%@ taglib uri="/WEB-INF/tlds/struts-html-el.tld" prefix="html" %>
+<%@ taglib uri="/WEB-INF/tlds/struts-tiles-el.tld" prefix="tiles" %>
+<%@ taglib uri="/WEB-INF/tlds/struts-bean.tld" prefix="bean" %>
+<%@ taglib uri="/WEB-INF/tlds/c-1_0-rt.tld" prefix="c" %>
+<%@ taglib uri="/WEB-INF/tlds/fmt-1_0-rt.tld" prefix="fmt" %>
+<%@ taglib uri="/WEB-INF/tlds/fn.tld" prefix="fn" %>
+
+<c:set var="contexto">${pageContext.request.contextPath}</c:set>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 1.1//EN"
+       "http://jakarta.apache.org/struts/dtds/tiles-config_1_1.dtd">
+
+<tiles-definitions>
+    <definition name=".mainLayout" path="/WebContent/paginas/comum/Layout.jsp">
+        <put name="mensagens" value="/WebContent/paginas/comum/Mensagens.jsp" />
+        <put name="menu" value="/WebContent/paginas/comum/menu.jsp"/>
+        <put name="rodape" value="/WebContent/paginas/comum/rodape.jsp"/>
+        <put name="subtitulo" value="subtitulo" />
+        <put name="areaTrabalho" value="área alterada" />
+        <put name="javascript" value="área alterada" />
+    </definition>
+</tiles-definitions>

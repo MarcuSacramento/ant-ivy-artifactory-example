@@ -1,0 +1,12 @@
+<jboss-web>
+	<context-root>/ecertidao</context-root>
+	<class-loading java2ClassLoadingCompliance="false">
+		<loader-repository>
+			br.gov.mj.ecertidao.web:loader=ecertidoes.war
+			<loader-repository-config>
+				java2ParentDelegation=false
+			</loader-repository-config>
+		</loader-repository>
+	</class-loading>
+
+</jboss-web>

@@ -1,0 +1,175 @@
+<!DOCTYPE struts-config PUBLIC 
+    "-//Apache Software Foundation//DTD Struts Configuration 1.2//EN" 
+    "http://jakarta.apache.org/struts/dtds/struts-config_1_2.dtd">
+
+<struts-config>
+
+    <form-beans>
+        <form-bean name="pesquisaCertidoesForm" type="br.gov.mj.ecertidoes.web.form.PesquisaCertidoesForm" />        
+        <form-bean name="solicitaCertidoesForm" type="br.gov.mj.ecertidoes.web.form.SolicitaCertidoesForm" />  
+        <form-bean name="manterSolicitacaoForm" type="br.gov.mj.ecertidoes.web.form.ManterSolicitacaoForm" />
+    </form-beans>
+
+    <global-exceptions>
+        <exception type="br.gov.mj.web.exception.NegocioException"
+            handler="br.gov.mj.struts.exceptionhandler.MjExceptionHandler" 
+            key=""/>
+
+        <exception type="br.gov.mj.corporativo.servicos.exceptions.ParametroInvalidoException" 
+            handler="br.gov.mj.struts.exceptionhandler.MjExceptionHandler"
+            path="/WebContent/paginas/comum/Erro.jsp"
+            key="controleacesso.msg.erro.sem.direitos"/>
+
+        <exception type="java.lang.Exception" 
+            handler="br.gov.mj.struts.exceptionhandler.MjExceptionHandler"
+            path="/WebContent/paginas/comum/Erro.jsp"
+            key="errors.nao.trataveis"/>
+    </global-exceptions>
+
+    <global-forwards>
+        <forward path="/" name="apresentacao"/>
+    </global-forwards>
+    
+    <action-mappings>
+
+        <action type="br.gov.mj.ecertidoes.web.action.InformacoesGeraisAction"
+            path="/informacoesGerais/abrirOrientacoesGerais" scope="request">
+            <forward name="apresentacao" path="/WebContent/paginas/aplicacao/OrientacoesGerais.jsp" />
+        </action>
+
+        <action type="br.gov.mj.ecertidoes.web.action.InformacoesGeraisAction"
+            path="/informacoesGerais/abrirBaseLegal" scope="request">
+            <forward name="apresentacao" path="/WebContent/paginas/aplicacao/baseLegal.jsp" />
+        </action>
+
+        <action type="br.gov.mj.ecertidoes.web.action.AbrirPesquisaAction"
+            path="/abrirPesquisa/abrirApresentacao"
+            scope="request" validate="true">
+            <forward name="apresentacao" path="/WebContent/paginas/aplicacao/apresentarCertidoes.jsp" />
+        </action>
+
+        <action type="br.gov.mj.ecertidoes.web.action.AbrirPesquisaAction"
+	        name="pesquisaCertidoesForm" 
+            path="/abrirPesquisa/abrirEmissao"
+            scope="request" validate="true">
+            <forward name="emissao" path="/WebContent/paginas/aplicacao/emitirCertidoes.jsp" />
+        </action>
+        
+        <action type="br.gov.mj.ecertidoes.web.action.AbrirPesquisaAction"
+	        name="pesquisaCertidoesForm" 
+            path="/abrirPesquisa/gerarCaptchaEmitir"
+            scope="request" validate="true">
+            <forward name="emissao" path="/WebContent/paginas/aplicacao/emitirCertidoes.jsp" />
+        </action>
+                
+        <action type="br.gov.mj.ecertidoes.web.action.AbrirPesquisaAction"
+	        name="pesquisaCertidoesForm" 
+            path="/abrirPesquisa/gerarCaptchaAutenticar"
+            scope="request" validate="true">
+            <forward name="autenticacao" path="/WebContent/paginas/aplicacao/autenticarCertidoes.jsp" />
+        </action>
+        
+        <action type="br.gov.mj.ecertidoes.web.action.AbrirPesquisaAction"
+	        name="pesquisaCertidoesForm" 
+            path="/abrirPesquisa/gerarCaptchaSolicitar"
+            scope="request" validate="true">
+            <forward name="solicita" path="/WebContent/paginas/aplicacao/consultarSolicitacaoCertidoes.jsp" />
+        </action>
+        
+        <action type="br.gov.mj.ecertidoes.web.action.AbrirPesquisaAction"
+	        name="pesquisaCertidoesForm"         
+            path="/abrirPesquisa/abrirAutenticacao"
+            scope="request" validate="true">
+            <forward name="autenticacao" path="/WebContent/paginas/aplicacao/autenticarCertidoes.jsp" />                        
+        </action>        
+
+        <action type="br.gov.mj.ecertidoes.web.action.AbrirPesquisaAction"
+	        name="solicitaCertidoesForm"         
+            path="/abrirPesquisa/abrirCertidaoNegada"
+            scope="request" validate="true">
+             <forward name="solicitacao" path="/WebContent/paginas/aplicacao/interessadoCertidaoNegada.jsp" />                        
+        </action> 
+        
+         <action type="br.gov.mj.ecertidoes.web.action.AbrirPesquisaAction"
+	        name="solicitaCertidoesForm"         
+            path="/abrirPesquisa/gerarCaptchaSolicitacao"
+            scope="request" validate="true">
+             <forward name="solicitacao" path="/WebContent/paginas/aplicacao/interessadoCertidaoNegada.jsp" />                        
+        </action> 
+        
+         <action type="br.gov.mj.ecertidoes.web.action.AbrirPesquisaAction"
+	        name="solicitaCertidoesForm"         
+            path="/abrirPesquisa/limparSolicitacao"
+            scope="request" validate="true">
+             <forward name="solicitacao" path="/WebContent/paginas/aplicacao/interessadoCertidaoNegada.jsp" />                        
+        </action> 
+        
+        <action type="br.gov.mj.ecertidoes.web.action.PesquisaCertidoesAction"
+	        name="pesquisaCertidoesForm"         
+            path="/pesquisaCertidoes/autenticacaoConsultar"
+            scope="request" validate="true">
+            <forward name="autenticacao" path="/WebContent/paginas/aplicacao/autenticarCertidoes.jsp" />                        
+            <forward name="autenticacao.negada" path="/WebContent/paginas/aplicacao/autenticidadeCertidoesNegada.jsp" /> 
+        </action> 
+
+        <action type="br.gov.mj.ecertidoes.web.action.PesquisaCertidoesAction"
+	        name="pesquisaCertidoesForm"         
+            path="/pesquisaCertidoes/emitirCertificado"
+            scope="request" validate="true">
+            <forward name="emitirCertidao" path="/WebContent/paginas/aplicacao/interessadoCertidaoAprovada.jsp" />                        
+        </action> 
+        
+        <action type="br.gov.mj.ecertidoes.web.action.SolicitaCertidoesAction"
+	        name="solicitaCertidoesForm"         
+            path="/solicitaCertidoes/solicitarCNN"
+            scope="request" validate="true">
+            <forward name="solicitacao" path="/WebContent/paginas/aplicacao/interessadoCertidaoNegada.jsp" />                       
+			<forward name="encaminha" path="/WebContent/paginas/aplicacao/solicitacaoCertidaoEnviada.jsp" />                                   
+        </action> 
+        
+        <action type="br.gov.mj.ecertidoes.web.action.PesquisaCertidoesAction"
+	        name="pesquisaCertidoesForm"         
+            path="/pesquisaCertidoes/emissaoEmitir"
+            scope="request" validate="true">
+            <forward name="emissao" path="/WebContent/paginas/aplicacao/emitirCertidoes.jsp" />   
+            <forward name="certidao.negada" path="/abrirPesquisa/abrirCertidaoNegada.do" />               
+        </action> 
+        
+        <action type="br.gov.mj.ecertidoes.web.action.ManterSolicitacaoAction"
+            name="manterSolicitacaoForm"         
+            path="/manterSolicitacao/abrirConsultarCertidao"
+            scope="request" validate="false">
+            <forward name="abrir.consulta" path="/WebContent/paginas/aplicacao/consultarSolicitacaoCertidoes.jsp" />                       
+        </action> 
+
+        <action type="br.gov.mj.ecertidoes.web.action.ManterSolicitacaoAction"
+            name="manterSolicitacaoForm"
+            input="/manterSolicitacao/abrirConsultarCertidao.do"
+            path="/manterSolicitacao/consultarSolicitacao"
+            scope="request" validate="true">
+            <forward name="certidao.emitida.sucesso" path="/WebContent/paginas/aplicacao/resultadoSolicitacaoSucesso.jsp" />   
+            <forward name="certidao.emitida.problemas" path="/WebContent/paginas/aplicacao/resultadoSolicitacaoErro.jsp" />
+        </action>
+        
+        <action type="br.gov.mj.ecertidoes.web.action.ManterSolicitacaoAction"
+            name="manterSolicitacaoForm"
+            path="/manterSolicitacao/downloadCertidao"
+            scope="request" validate="false">
+            <forward name="erro" path="/manterSolicitacao/consultarSolicitacao.do" />
+        </action>  
+	</action-mappings>
+
+    <message-resources parameter="application-resources"/>
+
+    <plug-in className="org.apache.struts.validator.ValidatorPlugIn">
+        <set-property property="pathnames" 
+            value="/WEB-INF/config/validator-rules.xml, /WEB-INF/config/validation.xml"/>
+    </plug-in>
+
+    <plug-in className="org.apache.struts.tiles.TilesPlugin" >
+        <set-property property="definitions-config" value="/WEB-INF/config/tiles-defs.xml" />
+        <set-property property="moduleAware" value="true" />
+        <set-property property="definitions-parser-validate" value="true" /> 
+    </plug-in>
+    
+</struts-config>

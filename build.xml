@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:ivy="antlib:org.apache.ivy.ant" name="eCertidao" default="main" basedir=".">
+   <description>Build da Aplicação eCertidao</description>
+
+   <loadproperties srcFile="src/application-resources.properties"/>
+   <property name="jdk.version" value="1.6" />
+   <!-- 
+      #### Não comitar no git, pois o job Jenkins controla a versão(JDK) ####
+      #### Para quando for necessário gerar com uma JDK local diferente  ####
+      #### Lembrar de alterar o target compile para usar essa JDK        ####
+   <property name="JDK1.6.dir" location="C:\Java\jdk1.6.0_45" />
+   <property name="javac1.6" location="${JDK1.6.dir}/bin/javac" />
+   -->
+
+   <!-- Configuração do repositório. snapshot para desenvolvedor e release a IC -->
+   <property name="artifactory.libs.repo" value="public"/>
+   <property name="artifactory.publish.repo" value="${build.status}"/>
+   <property name="artifactory.publish.status" value="${build.status}"/>
+
+   <!-- Localização dos Recursos para o Build -->
+   <property name="projectName" value="ecertidoes" />
+   <property name="web.dir" value=".ecertidoes.war" />
+   <property name="lib.dir" value="${web.dir}/WEB-INF/lib" />
+   <property name="web.classes.dir" location="${web.dir}/WEB-INF/classes" />
+   <property name="src.dir" location="src" />
+   <!-- Localização de onde serão gerados os artefatos -->   
+   <property name="target.dir" location="../binarios" />
+   <property name="target.temp.dir" location="../binarios/temp" />
+   <property name="war.name" value="${projectName}.war" />
+   
+   <!-- Criando os diretórios -->
+   <target name="init">
+      <echo message="Criando diretórios..." />
+      <mkdir dir="${web.dir}" />
+      <mkdir dir="${web.classes.dir}" />
+      <mkdir dir="${src.dir}" />
+      <mkdir dir="${target.dir}" />
+   </target>
+
+   <!-- Limpando os diretórios -->
+   <target name="clean" description="Limpeza pré-compilação">
+      <echo message="Limpando diretórios pré-compile..." />
+      <delete dir="${web.classes.dir}" />
+      <delete dir="${target.dir}" />
+      <delete dir="${web.dir}" />
+   </target>
+
+   <!-- Resolvendo Dependências -->
+   <target name="resolve" description="Resolvendo depências com Ivy e o Artifactory">
+      <echo message="Resolvendo Dependências..." />
+      <ivy:retrieve />
+      <ivy:cachepath pathid="compile.path" conf="compile,provided" />
+      <ivy:cachepath pathid="runtime.path" conf="runtime" />
+      <ivy:cachepath pathid="test.path" conf="test" />
+   </target>
+
+   <!-- Compilando o código Java -->
+   <target name="compile" depends="init, resolve" description="Compilar o código fonte">
+      <echo message="Compilando código fonte..." />
+      <mkdir dir="${web.classes.dir}" />
+      
+      <!-- 
+      #### Não comitar no git, pois o job Jenkins controla a versão(JDK) ####
+      #### Para quando for necessário gerar com uma JDK local diferente  ####
+      <javac executable="${javac1.6}" destdir="${web.classes.dir}" source="${jdk.version}" target="${jdk.version}" debug="true" includeantruntime="false" classpathref="compile.path" fork="yes">
+      -->
+      <javac destdir="${web.classes.dir}" source="${jdk.version}" target="${jdk.version}" debug="true" includeantruntime="false" classpathref="compile.path" fork="yes" encoding="iso-8859-1" >
+         <!-- <classpath refid="class.path" />-->
+         <src path="${src.dir}" />
+      </javac>
+   </target>
+
+   <!-- Copiando os resources -->
+   <target name="copy-resources" description="Copiando Java resources como xml e arquivos de propriedades">
+      <echo message="Compilando Recursos..." />
+      <copy todir="${web.dir}/WebContent">
+         <fileset dir="ecertidoes.war/WebContent" />
+      </copy>
+      <copy todir="${web.dir}/WEB-INF/tlds">
+         <fileset dir="ecertidoes.war/WEB-INF/tlds" />
+      </copy>
+      <echo message="Compilando arquivos de configuração..." />
+      <copy todir="${web.dir}/WEB-INF/config">
+         <fileset dir="ecertidoes.war/WEB-INF/config" />
+      </copy>
+      <copy file="ecertidoes.war/WEB-INF/jboss-web.xml" tofile="${web.dir}/WEB-INF/jboss-web.xml" />
+      <copy file="ecertidoes.war/WEB-INF/web.xml" tofile="${web.dir}/WEB-INF/web.xml" />
+      <copy file="${src.dir}/application-resources.properties" tofile="${web.dir}/WEB-INF/classes/application-resources.properties" />
+      <copy file="${src.dir}/displaytag.properties" tofile="${web.dir}/WEB-INF/classes/displaytag.properties" />
+   </target>
+
+   <!-- Criando o war -->
+   <target name="package" depends="clean,copy-resources,compile" description="Criar o arquivo war">
+      <!-- Empacotando as libs -->
+      <ivy:retrieve pattern="${lib.dir}/[artifact]-[revision].[ext]" conf="runtime" />
+      <echo message="Gerando .war..." />
+      <war destfile="${target.dir}/${war.name}"  webxml="${web.dir}/WEB-INF/web.xml">
+         <manifest>
+            <attribute name="Sistema" value="${geral.titulo.sistema}" />
+            <attribute name="Built-By" value="Ministério da Justica e Cidadania- CGTI" />
+            <attribute name="Deploy-Priority" value="800" />
+         </manifest>
+         <webinf dir="${web.dir}/WEB-INF" />
+         <zipfileset dir="${web.dir}/WebContent" prefix="WebContent" />
+      </war>
+      <echo message="Publicando no artifactory..." />
+      
+      <ivy:publish resolver="${artifactory.publish.repo}"
+         forcedeliver="true"
+         overwrite="true"
+         publishivy="true"
+         pubrevision="${build.version}"
+         status="${artifactory.publish.status}">
+         <artifacts pattern="${target.dir}/[artifact].[ext]"/> 
+      </ivy:publish>
+
+      <echo message="Removendo recursos não necessários..." />
+      <delete dir="${web.classes.dir}" />
+      <delete dir="${web.dir}" />
+      <delete dir="lib/" />
+   </target>
+
+   <target name="main" depends="package" />
+</project>
